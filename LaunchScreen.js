@@ -18,7 +18,7 @@ export default class LaunchScreen extends Component<Props> {
 
         setTimeout(() => {
             this.props.navigation.navigate('Main')
-        }, 5000);
+        }, 3000);
     }
 
     render() {
@@ -40,6 +40,6 @@ const styles = StyleSheet.create({
         width: '100%', height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#000000',
+        backgroundColor: '#231f20',
     }
 });

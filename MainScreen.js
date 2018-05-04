@@ -7,6 +7,7 @@ import {
     TouchableHighlight,
     View
 } from 'react-native';
+import Orientation from 'react-native-orientation';
 
 type Props = {};
 const limit = 20;
@@ -18,22 +19,12 @@ export default class MainScreen extends Component<Props> {
 
     constructor(props) {
         super(props);
-        this.state ={ isLoading: true, index: 0}
+        this.state ={ isLoading: true, index: 19}
     }
 
     componentDidMount() {
-        return fetch('https://api.tumblr.com/v2/tagged?tag=rainy%20gif&api_key=UP92HnXLD36Gyng30sqhyVZiG1eMxgGIGT3ihNoL3wkM3wQqgr'
-            + '&limit=' + limit)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                this.setState({
-                    isLoading: false,
-                    dataSource: responseJson.response,
-                }, function(){});
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        Orientation.lockToLandscape();
+        this.loadGifList();
     }
 
     render() {
@@ -63,11 +54,35 @@ export default class MainScreen extends Component<Props> {
     }
 
     _onLongPressImg = () => {
-        if (this.state.index < limit) {
+        if (this.state.index < limit - 1) {
             this.setState(previousState =>
                 ({ index: previousState.index + 1 })
             );
+        } else {
+            this.loadGifList();
         }
+    }
+
+    loadGifList() {
+        this.setState({ isLoading: true }, function(){});
+        let timestamp = (this.state.dataSource) ? this.state.dataSource[this.state.index].timestamp
+            : Math.floor(Date.now() / 1000);
+        return fetch('https://api.tumblr.com/v2/tagged?tag=rainy%20gif'
+            + '&api_key=UP92HnXLD36Gyng30sqhyVZiG1eMxgGIGT3ihNoL3wkM3wQqgr'
+            + '&limit=' + limit
+            + '&before=' + timestamp)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson.response);
+                this.setState({
+                    isLoading: false,
+                    dataSource: responseJson.response,
+                    index: 19,
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 }
 
