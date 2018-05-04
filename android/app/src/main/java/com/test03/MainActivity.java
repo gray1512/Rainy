@@ -1,8 +1,10 @@
 package com.test03;
 
 import com.facebook.react.ReactActivity;
+import android.content.Intent; // <--- import
+import android.content.res.Configuration; // <--- import
 
-public class MainActivity extends ReactActivity {
+public class MainActivity extends ReactActivity{
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -11,5 +13,13 @@ public class MainActivity extends ReactActivity {
     @Override
     protected String getMainComponentName() {
         return "test03";
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Intent intent = new Intent("onConfigurationChanged");
+        intent.putExtra("newConfig", newConfig);
+        this.sendBroadcast(intent);
     }
 }
