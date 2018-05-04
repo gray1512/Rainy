@@ -10,7 +10,7 @@ import {
 import Orientation from 'react-native-orientation';
 
 type Props = {};
-const limit = 20;
+const limit = 10;
 
 export default class MainScreen extends Component<Props> {
     static navigationOptions = {
@@ -73,11 +73,10 @@ export default class MainScreen extends Component<Props> {
             + '&before=' + timestamp)
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson.response);
                 this.setState({
                     isLoading: false,
                     dataSource: responseJson.response,
-                    index: 19,
+                    index: 0,
                 });
             })
             .catch((error) => {
@@ -93,6 +92,6 @@ const styles = StyleSheet.create({
         width: '100%', height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#000000',
+        backgroundColor: '#231f20',
     }
 });
