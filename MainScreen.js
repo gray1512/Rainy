@@ -11,6 +11,9 @@ import Orientation from 'react-native-orientation';
 
 type Props = {};
 const limit = 10;
+const audio = {
+    source: {local: require('./res/audio.mp3')}
+};
 
 export default class MainScreen extends Component<Props> {
     static navigationOptions = {
@@ -37,6 +40,7 @@ export default class MainScreen extends Component<Props> {
                 </View>
             )
         }
+
         return (
             <View style={styles.container}>
                 <StatusBar hidden />
@@ -48,7 +52,6 @@ export default class MainScreen extends Component<Props> {
                         source={{uri: this.state.dataSource[this.state.index].photos[0].alt_sizes[0].url}}
                     />
                 </TouchableHighlight>
-
             </View>
         );
     }
