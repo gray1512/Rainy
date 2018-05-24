@@ -5,15 +5,20 @@ import {
     StatusBar,
     StyleSheet,
     TouchableHighlight,
-    View
+    View,
+    BackHandler
 } from 'react-native';
 import Orientation from 'react-native-orientation';
+import Sound from "react-native-sound";
 
 type Props = {};
 const limit = 10;
-const audio = {
-    source: {local: require('./res/audio.mp3')}
-};
+Sound.setCategory('Playback');
+let rain = new Sound('audio.mp3', Sound.MAIN_BUNDLE, (error) => {
+    if (error) {
+        console.log('Cant load audio file: ' + error);
+    }
+});
 
 export default class MainScreen extends Component<Props> {
     static navigationOptions = {
@@ -41,6 +46,19 @@ export default class MainScreen extends Component<Props> {
             )
         }
 
+        BackHandler.addEventListener('hardwareBackPress', function() {
+            rain.release();
+            BackHandler.exitApp();
+            return true;
+        });
+
+        rain.setNumberOfLoops(-1);
+        rain.play((success) => {
+            if (!success) {
+                console.log('Sound did not play');
+            }
+        });
+
         return (
             <View style={styles.container}>
                 <StatusBar hidden />
@@ -64,7 +82,7 @@ export default class MainScreen extends Component<Props> {
         } else {
             this.loadGifList();
         }
-    }
+    };
 
     loadGifList() {
         this.setState({ isLoading: true }, function(){});
